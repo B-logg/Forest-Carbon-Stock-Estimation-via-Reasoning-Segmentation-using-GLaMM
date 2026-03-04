@@ -354,6 +354,10 @@ def main():
         pred_words = nltk.word_tokenize(pred_text)
         meteor_scores.append(meteor_score([gt_words], pred_words))
 
+        if step == 4:
+            break  # 일단 5개 샘플만 테스트 (전체 데이터셋으로 평가할 때는 이 줄 제거)
+            
+
 
     # --- 최종 지표 계산 ---
     # 1. Regression (탄소량: MAPE, R2, Pearson)
