@@ -166,7 +166,7 @@ def main():
     lora_config = LoraConfig(
         r=args.lora_r, lora_alpha=args.lora_alpha, target_modules=target_modules,
         lora_dropout=args.lora_dropout, bias="none", task_type="CAUSAL_LM",
-        modules_to_save=None  # 단어 사전(embed_tokens, lm_head)을 얼리기(학습 X)
+        modules_to_save=["embed_tokens", "lm_head"]
     )
     model = get_peft_model(model, lora_config)
 
