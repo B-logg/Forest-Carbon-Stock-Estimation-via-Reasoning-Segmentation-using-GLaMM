@@ -247,6 +247,7 @@ def main():
                 use_cache=True,
                 bad_words_ids=[[tokenizer.unk_token_id]],
                 do_sample=True,
+                repetition_penalty=1.1,
                 temperature=0.2,
                 top_p=0.9
                 )
