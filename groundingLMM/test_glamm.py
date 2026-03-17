@@ -195,13 +195,19 @@ def main():
     if os.path.exists(non_lora_path):
         print("\nLoading non-LoRA weights...")
         non_lora_state_dict = torch.load(non_lora_path, map_location="cpu")
+
+        non_lora_state_dict = {k: v.to(torch.bfloat16) for k, v in non_lora_state_dict.items()}
         
         # 이름 바꿀 필요 없이 PEFT 모델 상태에서 그대로 로드
         load_info = model.load_state_dict(non_lora_state_dict, strict=False)
         print(f"[Non-LoRA] 장착 완료! (남은 잉여 부품: {len(load_info.unexpected_keys)}개)")
 
     # 3. 가중치가 모두 완벽하게 결합된 상태에서 껍데기 벗기고 GPU로 올리기
-    model = model.cuda().bfloat16()
+    model = model.cuda()
+
+    for param in model.parameters():
+        if param.is_floating_point():
+            param.data = param.data.to(torch.bfloat16)
 
     base_glamm = model.base_model.model
     # 여기까지 주석처리
