@@ -186,6 +186,8 @@ def main():
     model = GLaMMForCausalLM.from_pretrained(BASE_MODEL_PATH, low_cpu_mem_usage=True, torch_dtype=torch.bfloat16, seg_token_idx=seg_token_idx)
     
     
+    # 제로샷 시 여기부터
+    """
     # 1. PEFT 모델 껍데기 씌우기
     model = PeftModel.from_pretrained(model, args.hf_model_path)
     
@@ -203,15 +205,16 @@ def main():
     model = model.merge_and_unload().cuda().bfloat16()
 
     base_glamm = model.get_model()
-    
-
+    # 여기까지 주석처리
     """
-    제로샷 테스트 시 사용
+
+    
+    # 제로샷 테스트 시 사용
     model = model.cuda().bfloat16()
 
     base_glamm = model.model
 
-    """
+    
     
     if hasattr(base_glamm, "grounding_encoder"):
         mask_decoder = base_glamm.grounding_encoder.mask_decoder
