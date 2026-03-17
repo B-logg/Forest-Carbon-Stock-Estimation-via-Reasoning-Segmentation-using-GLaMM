@@ -23,7 +23,7 @@ from tools.utils import dict_to_cuda, DEFAULT_IM_START_TOKEN, DEFAULT_IM_END_TOK
 # 1. 인자 및 경로 설정
 def parse_args():
     parser = argparse.ArgumentParser(description="Optimal GLaMM Forest Finetuning (Pure LoRA)")
-    parser.add_argument("--version", default=os.path.expanduser("~/학부연구생/bosung/Winter-Project/groundingLMM/checkpoints/GLaMM-FullScope"))
+    parser.add_argument("--version", default=os.path.expanduser("~/학부연구생/bosung/Winter-Project/groundingLMM/checkpoints/GLaMM-GCG"))
     
     # 학습용 JSON
     parser.add_argument("--dataset_path", type=str, default=os.path.expanduser("~/학부연구생/bosung/Winter-Project/groundingLMM/dataset/glamm_train.json"))
@@ -206,7 +206,7 @@ def main():
     ds_config = {
         "train_micro_batch_size_per_gpu": args.batch_size,
         "gradient_accumulation_steps": args.grad_accumulation_steps,
-        "optimizer": { "type": "AdamW", "params": { "lr": args.lr, "weight_decay": 0.0, "betas": [0.9, 0.95] } },
+        "optimizer": { "type": "AdamW", "params": { "lr": args.lr, "weight_decay": 0.05, "betas": [0.9, 0.95] } },
         "scheduler": { "type": "WarmupDecayLR", "params": { "total_num_steps": args.epochs * len(train_loader), "warmup_num_steps": 100, "warmup_max_lr": args.lr, "warmup_min_lr": 0.0} },
         "bf16": { "enabled": True },
         "zero_optimization": { "stage": 2, "overlap_comm": True, "contiguous_gradients": True }
