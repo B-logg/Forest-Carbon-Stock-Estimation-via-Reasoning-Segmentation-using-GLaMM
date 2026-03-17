@@ -200,7 +200,7 @@ def main():
         load_info = model.load_state_dict(non_lora_state_dict, strict=False)
         print(f"[Non-LoRA] 장착 완료! (남은 잉여 부품: {len(load_info.unexpected_keys)}개)")
 
-    model = model.cuda()
+    model = model.bfloat16().cuda()
 
     for name, param in model.named_parameters():
         if param.is_floating_point():
@@ -291,22 +291,24 @@ def main():
 
                 batch_size = images.shape[0]
                 dummy_sizes = [(1024, 1024)] * batch_size
-                
+
+                with torch.autocast(device_type="cuda", dtype=torch.bfloat16):
                 # 2. 생성된 텍스트 기반으로 마스크 추출 (Forward Pass)
-                outputs = model(
-                    input_ids=output_ids,
-                    images=images,
-                    global_enc_images=images,
-                    grounding_enc_images=sam_images,
-                    bboxes=None,          
-                    labels=None,          
-                    attention_masks=torch.ones_like(output_ids),
-                    offset=offset,          
-                    masks_list=None,      
-                    label_list=dummy_sizes,      
-                    resize_list=dummy_sizes,     
-                    inference=True        
-                )
+                    outputs = model(
+                        input_ids=output_ids,
+                        images=images,
+                        global_enc_images=images,
+                        grounding_enc_images=sam_images,
+                        bboxes=None,          
+                        labels=None,          
+                        attention_masks=torch.ones_like(output_ids),
+                        offset=offset,          
+                        masks_list=None,      
+                        label_list=dummy_sizes,      
+                        resize_list=dummy_sizes,     
+                        inference=True        
+                    )
+                    
                 if 'pred_masks' in outputs and outputs['pred_masks'] is not None and len(outputs['pred_masks']) > 0:
                     pred_masks = outputs['pred_masks'][0]
                 else:
