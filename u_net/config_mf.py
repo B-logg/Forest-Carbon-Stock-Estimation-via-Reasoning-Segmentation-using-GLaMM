@@ -1,4 +1,4 @@
-BASE_DIR = "/workspace"
+BASE_DIR = "/home/sbosung1789/Winter-Project/u_net"
 SRC_DIR = BASE_DIR+"/src"
 
 CARBON_CLIPPING_DICT = {'city_AP_10_l': 40, 'city_AP_10_h': 640,          # 4000
