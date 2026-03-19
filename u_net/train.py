@@ -33,9 +33,9 @@ def main(args, world_size, rank):
         writer_tb = SummaryWriter(log_dir=tensorb_dir)
 
     #load data
-    train_loader = build_data_loader("datalists", cfg.TRAIN_CSV,
+    train_loader = build_data_loader("datalists/", cfg.TRAIN_CSV,
                                      BATCH_SIZE, args.num_workers, args.local_rank, cfg)
-    val_loader = build_data_loader( "datalists", cfg.VAL_CSV,
+    val_loader = build_data_loader( "datalists/", cfg.VAL_CSV,
                                      BATCH_SIZE, args.num_workers, args.local_rank, cfg, shuffle=False)
 
     #build model
