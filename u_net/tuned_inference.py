@@ -106,9 +106,12 @@ def main():
                 total_acc_r += batch_r2      
                 
                 pred_cls_labels = torch.argmax(preds_cls, dim=1)
-                valid_mask = (labels_cls != 255)
-                if valid_mask.sum() > 0: 
-                    correct = (pred_cls_labels[valid_mask] == labels_cls[valid_mask]).sum().item()
+                
+                labels_cls_squeezed = labels_cls.squeeze(1)
+                
+                valid_mask = (labels_cls_squeezed != 255)
+                if valid_mask.sum() > 0: # 숲이 1픽셀이라도 존재할 때만 채점
+                    correct = (pred_cls_labels[valid_mask] == labels_cls_squeezed[valid_mask]).sum().item()
                     total_pixel_acc += correct / valid_mask.sum().item()
                 
                 num_batches += 1
