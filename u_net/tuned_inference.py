@@ -86,7 +86,7 @@ def main():
     print(f"Loading weights from {checkpoint_path}...")
     checkpoint = torch.load(checkpoint_path, map_location='cuda', weights_only=False)
     
-    state_dict = checkpoint['state_dict'] if 'state_dict' in checkpoint else checkpoint
+    state_dict = checkpoint['model']
     model.load_state_dict({k.replace('module.', ''): v for k, v in state_dict.items()})
     model.eval()
 
