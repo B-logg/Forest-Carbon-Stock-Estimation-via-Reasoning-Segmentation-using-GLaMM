@@ -66,6 +66,7 @@ def main():
     cfg = CONFIGURE(args.image_type)
     
     cfg.VAL_CSV = "test_forest_AP_10_25.csv" 
+    cfg.NUM_CLASSES = 5
     
     OUTPUT_DIR = "./inference_results"
     OUTPUT_CARBON_DIR = os.path.join(OUTPUT_DIR, "carbon_maps")
@@ -104,6 +105,8 @@ def main():
             images = batch_data["image"].cuda()
             labels_cls = batch_data["label_cls"].cuda()
             labels_reg = batch_data["label_reg"].cuda()
+
+            labels_cls[(labels_cls < 0) | (labels_cls >= 5)] = 255
             
             # [추론 및 Metric 계산]
             preds_cls, preds_reg = model(images)
