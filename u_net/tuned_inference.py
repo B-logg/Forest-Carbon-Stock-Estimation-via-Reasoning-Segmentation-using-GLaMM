@@ -123,10 +123,17 @@ def main():
 
   
             # 시각화 1: 탄소량 히트맵 (Regression)
-
             pred_carbon_np = preds_reg[0].squeeze().cpu().numpy()
             carbon_save_path = os.path.join(OUTPUT_CARBON_DIR, f"test_img_{batch_idx:04d}_carbon.png")
-            plt.imsave(carbon_save_path, pred_carbon_np, cmap='magma')
+            
+            plt.figure(figsize=(8, 8))
+            heatmap = plt.imshow(pred_carbon_np, cmap='Greys') 
+            cbar = plt.colorbar(heatmap, fraction=0.046, pad=0.04)
+            cbar.set_label('Carbon Stock Level', rotation=270, labelpad=15)
+            
+            plt.axis('off') 
+            plt.savefig(carbon_save_path, bbox_inches='tight')
+            plt.close() 
 
 
             # 시각화 2: 수종 분할 결과 원본 오버레이 (Classification)
