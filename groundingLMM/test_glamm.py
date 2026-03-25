@@ -380,9 +380,6 @@ def main():
         gt_words = nltk.word_tokenize(gt_text)
         pred_words = nltk.word_tokenize(pred_text)
         meteor_scores.append(meteor_score([gt_words], pred_words))
-
-        if step == 4:
-            break  # 일단 5개 샘플만 테스트 (전체 데이터셋으로 평가할 때는 이 줄 제거)
             
 
 
