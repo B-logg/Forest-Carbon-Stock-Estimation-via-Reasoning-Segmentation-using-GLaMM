@@ -38,12 +38,13 @@ def tensor_to_cv2_image(tensor_img):
     return cv2.cvtColor(orig_img, cv2.COLOR_RGB2BGR)
 
 def main():
-
     # 2. 환경 및 인자 설정
     parser = TrainParser()
     args = parser.parse_args()
-    cfg = CONFIGURE(args.image_type)
     
+    args.image_type = "forest_AP_10_25" 
+    
+    cfg = CONFIGURE(args.image_type)
     cfg.VAL_CSV = "test_forest_AP_10_25.csv" 
     cfg.NUM_CLASSES = 5
     
@@ -55,11 +56,10 @@ def main():
 
     # 3. 데이터로더 및 모델 빌드
     print(f"Loading Test Dataset from {cfg.VAL_CSV}...")
-    # 시각화 매핑을 위해 batch_size를 1로 고정
     test_loader = build_data_loader("datalists/", cfg.VAL_CSV, 1, args.num_workers, args.local_rank, cfg, shuffle=False)
 
     print("Building Model...")
-    model = build_model(args.net, num_class=5, dropout=args.enc_dropout)
+    model = build_model(args.net, num_class=cfg.NUM_CLASSES, dropout=args.enc_dropout)
     model.cuda()
 
     checkpoint_path = "./src/outputs/forest_AP_10_25/pths/best_checkpoints_loss.pth"
@@ -73,7 +73,7 @@ def main():
     criterion = CarbonLoss()
     palette = get_color_palette()
 
-    # 평가지표 누적용
+    # 평가지표 누적용 변수 (total_pixel_acc로 명확히 수정)
     total_loss, total_cls_loss, total_reg_loss = 0.0, 0.0, 0.0
     total_acc_corr, total_acc_r, total_pixel_acc = 0.0, 0.0, 0.0
     num_batches = 0
@@ -81,51 +81,56 @@ def main():
     print("\nStarting Inference & Visualization...")
     with torch.no_grad():
         for batch_idx, batch_data in enumerate(tqdm(test_loader)):
+            import math # NaN 체크용
+            
             images = batch_data["image"].cuda()
             labels_cls = batch_data["label_cls"].cuda()
             labels_reg = batch_data["label_reg"].cuda()
 
+            # 매핑 범위를 벗어난 이상한 라벨 무시 (255)
             labels_cls[(labels_cls < 0) | (labels_cls >= 5)] = 255
             
-            # [추론 및 Metric 계산]
+            # [추론]
             preds_cls, preds_reg = model(images)
             
+            # [Metric 계산]
             losses = criterion(preds_cls, preds_reg, labels_cls, labels_reg)
             if isinstance(losses, tuple):
                 loss, cls_loss, reg_loss, batch_corr, batch_r2 = losses
             else:
-                continue # 정상적인 튜플이 아니면 패스!
+                continue
                 
+            # [NaN 및 배경 처리 로직]
             if not (math.isnan(loss.item()) or math.isnan(cls_loss.item())):
                 total_loss += loss.item()
                 total_cls_loss += cls_loss.item()
                 total_reg_loss += reg_loss.item()
                 
-                # CarbonLoss가 계산한 완벽한 회귀 지표 가져오기
+                # CarbonLoss가 계산한 회귀 지표
                 total_acc_corr += batch_corr 
                 total_acc_r += batch_r2      
                 
+                # 수종 분류 Pixel Accuracy 직접 채점 (255 배경은 무시!)
                 pred_cls_labels = torch.argmax(preds_cls, dim=1)
-                
-                labels_cls_squeezed = labels_cls.squeeze(1)
+                labels_cls_squeezed = labels_cls.squeeze(1) # 차원 맞추기
                 
                 valid_mask = (labels_cls_squeezed != 255)
-                if valid_mask.sum() > 0: # 숲이 1픽셀이라도 존재할 때만 채점
+                if valid_mask.sum() > 0: 
                     correct = (pred_cls_labels[valid_mask] == labels_cls_squeezed[valid_mask]).sum().item()
                     total_pixel_acc += correct / valid_mask.sum().item()
                 
                 num_batches += 1
 
-
+  
             # 시각화 1: 탄소량 히트맵 (Regression)
-           
+
             pred_carbon_np = preds_reg[0].squeeze().cpu().numpy()
             carbon_save_path = os.path.join(OUTPUT_CARBON_DIR, f"test_img_{batch_idx:04d}_carbon.png")
             plt.imsave(carbon_save_path, pred_carbon_np, cmap='magma')
 
-        
-            # 시각화 2: 수종 분할 결과 원본 오버레이
-            
+
+            # 시각화 2: 수종 분할 결과 원본 오버레이 (Classification)
+    
             orig_cv2_img = tensor_to_cv2_image(images[0])
             orig_h, orig_w = orig_cv2_img.shape[:2]
 
@@ -138,12 +143,12 @@ def main():
             alpha = 0.5
             blended_img = cv2.addWeighted(orig_cv2_img, 1 - alpha, color_mask, alpha, 0)
             
+            # 비산림(0번) 투명화
             bg_mask = (pred_cls_resized == 0)
             blended_img[bg_mask] = orig_cv2_img[bg_mask]
 
             mask_save_path = os.path.join(OUTPUT_MASK_DIR, f"test_img_{batch_idx:04d}_overlay.jpg")
             cv2.imwrite(mask_save_path, blended_img)
-
 
     # 4. 최종 테스트셋 평가지표 출력
     if num_batches > 0:
@@ -154,8 +159,8 @@ def main():
         print(f"Classification Loss (cls_loss) : {total_cls_loss/num_batches:.4f}")
         print(f"Regression Loss     (reg_loss) : {total_reg_loss/num_batches:.4f}")
         print("-" * 60)
-        print(f"Classification Accuracy (Corr) : {(total_acc_corr/num_batches)*100:.2f}%")
-        print(f"Pearson Correlation (R)        : {total_acc_r/num_batches:.4f}")
+        print(f"Classification Pixel Accuracy  : {(total_pixel_acc/num_batches)*100:.2f}%")
+        print(f"Pearson Correlation (R)        : {total_acc_corr/num_batches:.4f}")
         print(f"R-squared (R2 Score)           : {total_acc_r/num_batches:.4f}")
         print("="*60)
         print(f"Visualizations successfully saved to: {OUTPUT_DIR}/")
