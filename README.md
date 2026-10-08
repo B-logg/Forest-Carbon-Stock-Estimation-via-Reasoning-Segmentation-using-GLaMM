@@ -28,7 +28,7 @@ GLaMM이 분석할 대상을 지정하고, U-Net이 해당 대상의 위치와 �
 
 
 ## 결과
-### **일반적인 나무 이미지** \
+### **일반적인 나무 이미지** 
 input
 ![alt text](image/image-3.png)
 output
@@ -48,7 +48,7 @@ output
 ![alt text](image/image-7.png)
 >Based on my expert ecological analysis of this scene, &lt;p&gt;gravel &lt;/p&gt; [SEG]  and &lt;p&gt; grass &lt;/p&gt; [SEG]  are attached to the &lt;p&gt;road &lt;/p&gt;  [SEG]  , indicating a blend of farmless and pasture. Beside this road, a &lt;p&gt; tree &lt;/p&gt; [SEG]  is situated on the gravel, which is part of a large green field. The vast&lt;p&gt;  sky &lt;/p&gt; [SEG]  stretches over the road, tree, grass, and a nearby &lt;p&gt;mountain &lt;/p&gt;  [SEG]  . The grass appears to be attached to the road, suggesting a rural, green landscape.&lt;/s&gt;
 
-### **항공 산림 이미지** \
+### **항공 산림 이미지** 
 input \
 ![alt text](image/image-8.png)
 output\
