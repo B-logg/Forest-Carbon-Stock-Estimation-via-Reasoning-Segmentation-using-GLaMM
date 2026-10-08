@@ -49,18 +49,18 @@ output
 >Based on my expert ecological analysis of this scene, &lt;p&gt;gravel &lt;/p&gt; [SEG]  and &lt;p&gt; grass &lt;/p&gt; [SEG]  are attached to the &lt;p&gt;road &lt;/p&gt;  [SEG]  , indicating a blend of farmless and pasture. Beside this road, a &lt;p&gt; tree &lt;/p&gt; [SEG]  is situated on the gravel, which is part of a large green field. The vast&lt;p&gt;  sky &lt;/p&gt; [SEG]  stretches over the road, tree, grass, and a nearby &lt;p&gt;mountain &lt;/p&gt;  [SEG]  . The grass appears to be attached to the road, suggesting a rural, green landscape.&lt;/s&gt;
 
 **항공 산림 이미지** \
-input
+input \
 ![alt text](image-8.png)
-output
+output\
 ![alt text](image-11.png)
 ![alt text](image-10.png)
 >"pred_text": "[SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] . . . . . . . . . It is [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] it it it it it it it it it it it it it it it [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] &lt;p&gt; &lt;p&gt; &lt;p&gt; &lt;p&gt; &lt;p&gt; &lt;p&gt; &lt;p&gt; &lt;p&gt; &lt;p&gt; &lt;p&gt; &lt;p&gt; &lt;p&gt; &lt;p&gt; &lt;p&gt; &lt;p&gt; :  [SEG] [SEG] [SEG] [SEG] [SEG] [SEG]  it it it it it it it it it it it it it it  it  it  it  it  it  it  it  [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] &lt;/p&gt; &lt;/p&gt; &lt;/p&gt; &lt;/p&gt; &lt;/p&gt; &lt;/p&gt; &lt;/p&gt; &lt;/p&gt; &lt;/p&gt; &lt;/p&gt; &lt;/p&gt; &lt;/p&gt; &lt;/p&gt; &lt;/p&gt; &lt;/p&gt; [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] Sure, it is [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] Surely, the                Sure, the             Sure, [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG]", 
 
 
-input
+input \
 ![alt text](image-13.png)
 
-output
+output \
 ![alt text](image-15.png)
 ![alt text](image-16.png)
 
