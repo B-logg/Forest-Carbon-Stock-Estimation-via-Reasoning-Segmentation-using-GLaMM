@@ -8,7 +8,7 @@ Large Multimodal Model(LMM)인 GLaMM을 활용하여 수종 군집 별 segmentat
 이를 기반으로 해당 군집의 탄소 저장량 계산(탄소 저장량 공식 활용), 더 나아가 영상에 찍힌 산림의 총 탄소 저장량 계산 및 산림의 건강 상태 모니터링까지 출력한다. 
 
 ### 구상한 아키텍처
-![alt text](image-1.png)
+![alt text](image/image-1.png)
 
 **파이프라인** \
 GLaMM이 분석할 대상을 지정하고, U-Net이 해당 대상의 위치와 탄소량을 픽셀 단위로 예측하는 파이프라인을 계획 
@@ -30,39 +30,39 @@ GLaMM이 분석할 대상을 지정하고, U-Net이 해당 대상의 위치와 �
 ### 결과
 **일반적인 나무 이미지** \
 input
-![alt text](image-3.png)
+![alt text](image/image-3.png)
 output
-![alt text](image-2.png)
+![alt text](image/image-2.png)
 
 > Based on my expert ecological analysis of this scene, &lt;p&gt;grass&lt;/p&gt;  [SEG]  is flourishing in the field, with a &lt;p&gt;tree &lt;/p&gt;  [SEG]  standing tall and attached to it. The tree is located in the midst of a lush, vibrant field, which also contains flowers. The area is enclosed by a &lt;p&gt; mountain &lt;/p&gt;  [SEG]  , and the &lt;p&gt; sky &lt;/p&gt;  [SEG]  is visible above the tree. The tree is attached to the grass, indicating the presence of &lt;p&gt; sand &lt;/p&gt;  [SEG]  . The scene is a bright, sunny landscape, and there is a significant presence of biomass.&lt;/s&gt;
 
 input
-![alt text](image-4.png)
+![alt text](image/image-4.png)
 output
-![alt text](image-5.png)
+![alt text](image/image-5.png)
 >Based on my expert ecological analysis of this scene, &lt;p&gt;person-1 &lt;/p&gt; [SEG]  is standing on &lt;p&gt;  dirt &lt;/p&gt; [SEG]  , which is attached to a long-haired &lt;p&gt;  tree &lt;/p&gt;[SEG]  . This tree is located in the center of a large, bright yellow tree and some bushes, all under the expansive &lt;p&gt; sky &lt;/p&gt; [SEG]  . The sky is also seen stretching over the entire landscape, across the entire field of tall, orange trees with trees standing on the ground. The area is a vast open field with trees growing out of the ground, indicating a marked vegetation area with a high tree cover.&lt;/s&gt;
 
 input
-![alt text](image-6.png)
+![alt text](image/image-6.png)
 output
-![alt text](image-7.png)
+![alt text](image/image-7.png)
 >Based on my expert ecological analysis of this scene, &lt;p&gt;gravel &lt;/p&gt; [SEG]  and &lt;p&gt; grass &lt;/p&gt; [SEG]  are attached to the &lt;p&gt;road &lt;/p&gt;  [SEG]  , indicating a blend of farmless and pasture. Beside this road, a &lt;p&gt; tree &lt;/p&gt; [SEG]  is situated on the gravel, which is part of a large green field. The vast&lt;p&gt;  sky &lt;/p&gt; [SEG]  stretches over the road, tree, grass, and a nearby &lt;p&gt;mountain &lt;/p&gt;  [SEG]  . The grass appears to be attached to the road, suggesting a rural, green landscape.&lt;/s&gt;
 
 **항공 산림 이미지** \
 input \
-![alt text](image-8.png)
+![alt text](image/image-8.png)
 output\
-![alt text](image-11.png)
-![alt text](image-10.png)
+![alt text](image/image-11.png)
+![alt text](image/image-10.png)
 >"pred_text": "[SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] . . . . . . . . . It is [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] it it it it it it it it it it it it it it it [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] &lt;p&gt; &lt;p&gt; &lt;p&gt; &lt;p&gt; &lt;p&gt; &lt;p&gt; &lt;p&gt; &lt;p&gt; &lt;p&gt; &lt;p&gt; &lt;p&gt; &lt;p&gt; &lt;p&gt; &lt;p&gt; &lt;p&gt; :  [SEG] [SEG] [SEG] [SEG] [SEG] [SEG]  it it it it it it it it it it it it it it  it  it  it  it  it  it  it  [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] &lt;/p&gt; &lt;/p&gt; &lt;/p&gt; &lt;/p&gt; &lt;/p&gt; &lt;/p&gt; &lt;/p&gt; &lt;/p&gt; &lt;/p&gt; &lt;/p&gt; &lt;/p&gt; &lt;/p&gt; &lt;/p&gt; &lt;/p&gt; &lt;/p&gt; [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] Sure, it is [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] Surely, the                Sure, the             Sure, [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG] [SEG]", 
 
 
 input \
-![alt text](image-13.png)
+![alt text](image/image-13.png)
 
 output \
-![alt text](image-15.png)
-![alt text](image-16.png)
+![alt text](image/image-15.png)
+![alt text](image/image-16.png)
 
 >"pred_text": "[SEG] . In addition, the &lt;p&gt; sky &lt;/p&gt; [SEG] 's over a <p> &lt;/p&gt; [SEG] - of a small body of a small body of a small body of a small body of a  &lt;/p&gt; &lt;/p&gt; &lt;/p&gt; &lt;/p&gt; &lt;/p&gt; [SEG]  it, it, it, it, it, it, it, it, [SEG] it, it, it, it, it, it, it,  [SEG]  it,  it,  it,  it,  it,  it.  [SEG]  it,  it,  it,  it, it, it, it, it, it, it.  it,  it,  it,  it,  it- it,  it,  it,  it,  it, it,  it,  it,  it,  it, [SEG]  it,  it,  it,  it,  [SEG]  it,  it,  it,  [SEG]  it, it, it, it, it, it,  it,  it,  it,  [SEG] [SEG]  it,  it,  it,  it, [SEG] [SEG]  it,  it,  it,  it.  it,  it,  it,  it,",
 
